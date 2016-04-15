@@ -33,11 +33,15 @@ const actions = {
     cb();
   },
   merge: (context, entities, cb) => {
-    // Retrieve the location entity and store it into a context field
     const loc = firstEntityValue(entities, 'location');
     if (loc) {
       context.loc = loc;
     }
+    const what = firstEntityValue(entities, 'what');
+    if (what) {
+      context.what = what;
+    }
+
     cb(context);
   },
   error: (sessionId, msg) => {
@@ -46,7 +50,34 @@ const actions = {
   'fetch-weather': (context, cb) => {
     // Here should go the api call, e.g.:
     // context.forecast = apiCall(context.loc)
-    context.forecast = 'sunny';
+    if(context.loc === 'Portland') {
+       context.forecast = 'rainy';
+    }
+    else {
+       context.forecast = 'sunny';
+    }
+    cb(context);
+  },
+  'look-for-consumer': (context, cb) => {
+      // look for consumers
+      if(context.what === 'piglets') {
+        context.consumer = 'nobody consuming ';
+      }
+      else {
+        context.consumer = 'mike wants ' ;
+      }
+    context.consumer = context.consumer + context.what;
+    cb(context);
+  },
+  'look-for-producer': (context, cb) => {
+      // look for producers
+      if(context.what === 'piglets') {
+        context.producer = 'nobody producing ';
+      }
+      else {
+        context.producer = 'mike has ';
+      }
+    context.producer = context.producer + context.what;
     cb(context);
   },
 };
