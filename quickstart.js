@@ -7,7 +7,8 @@
 // const Wit = require('node-wit').Wit;
 const Wit = require('../node-wit').Wit;
 
-const Mine = require('../monjs')
+const Mine = require('./test1.js')
+
 const token = (() => {
   if (process.argv.length !== 3) {
     console.log('usage: node examples/weather.js <wit-token>');
