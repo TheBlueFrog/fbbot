@@ -7,6 +7,7 @@
 // const Wit = require('node-wit').Wit;
 const Wit = require('../node-wit').Wit;
 
+const Mine = require('../monjs')
 const token = (() => {
   if (process.argv.length !== 3) {
     console.log('usage: node examples/weather.js <wit-token>');
@@ -58,7 +59,7 @@ const actions = {
     }
     cb(context);
   },
-  'look-for-consumer': (context, cb) => {
+  'find-consumer': (context, cb) => {
       // look for consumers
       if(context.what === 'piglets') {
         context.consumer = 'nobody consuming ';
@@ -69,7 +70,7 @@ const actions = {
     context.consumer = context.consumer + context.what;
     cb(context);
   },
-  'look-for-producer': (context, cb) => {
+  'find-supplier': (context, cb) => {
       // look for producers
       if(context.what === 'piglets') {
         context.producer = 'nobody producing ';
