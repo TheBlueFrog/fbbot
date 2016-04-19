@@ -7,7 +7,7 @@
 // const Wit = require('node-wit').Wit;
 const Wit = require('../node-wit').Wit;
 
-const Mine = require('./test1.js')
+const DB = require('./test1.js')
 
 const token = (() => {
   if (process.argv.length !== 3) {
@@ -49,6 +49,7 @@ const actions = {
   error: (sessionId, msg) => {
     console.log('Oops, I don\'t know what to do.');
   },
+
   'fetch-weather': (context, cb) => {
     // Here should go the api call, e.g.:
     // context.forecast = apiCall(context.loc)
@@ -60,27 +61,27 @@ const actions = {
     }
     cb(context);
   },
+
   'find-consumer': (context, cb) => {
-      // look for consumers
-      if(context.what === 'piglets') {
-        context.consumer = 'nobody consuming ';
-      }
-      else {
-        context.consumer = 'mike wants ' ;
-      }
-    context.consumer = context.consumer + context.what;
-    cb(context);
+      DB.findConsumers (context.what, function(consumers) {
+        context.consumer = consumers;
+        if (consumers.length < 1 ) {
+            consumers = "(none)"
+        }
+        console.log("find-consumer returns " + consumers);
+        cb(context);
+      });
   },
+
   'find-supplier': (context, cb) => {
-      // look for producers
-      if(context.what === 'piglets') {
-        context.producer = 'nobody producing ';
-      }
-      else {
-        context.producer = 'mike has ';
-      }
-    context.producer = context.producer + context.what;
-    cb(context);
+      DB.findSuppliers (context.what, function(suppliers) {
+        if (suppliers.length < 1 ) {
+            suppliers = "(none)"
+        }
+        context.supplier = suppliers;
+        console.log("find-supplier returns " + suppliers);
+        cb(context);
+      });
   },
 };
 
